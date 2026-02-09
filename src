@@ -1,0 +1,88 @@
+/************************************************************
+ * File: main.c
+ * Project: Smart Embedded Alarm System
+ * Course: SWE-450 Embedded Systems
+ * Author: Asagai Barbee
+ *
+ * Description:
+ * This file implements the main control logic for the
+ * Smart Embedded Alarm System running on the ARM HPS.
+ * The application interfaces with FPGA logic using
+ * memory-mapped I/O and GPIO.
+ ************************************************************/
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <unistd.h>
+
+/* ---- System States ---- */
+typedef enum {
+    IDLE,
+    CONFIGURATION,
+    ARMED,
+    ALARM_ACTIVE
+} system_state_t;
+
+/* ---- Mock GPIO / FPGA Functions (Replace Later) ---- */
+bool read_config_button(void)   { return false; }
+bool read_confirm_button(void)  { return false; }
+bool read_reset_button(void)    { return false; }
+bool alarm_triggered(void)      { return false; }
+
+void write_fpga_config(void)    { }
+void activate_alarm(void)       { printf("Alarm ON\n"); }
+void deactivate_alarm(void)     { printf("Alarm OFF\n"); }
+
+/* ---- Main Application ---- */
+int main(void)
+{
+    system_state_t system_state = IDLE;
+
+    printf("Smart Embedded Alarm System Starting...\n");
+
+    while (1)
+    {
+        switch (system_state)
+        {
+            case IDLE:
+                deactivate_alarm();
+                if (read_config_button())
+                {
+                    system_state = CONFIGURATION;
+                }
+                break;
+
+            case CONFIGURATION:
+                if (read_confirm_button())
+                {
+                    write_fpga_config();
+                    system_state = ARMED;
+                }
+                break;
+
+            case ARMED:
+                if (alarm_triggered())
+                {
+                    activate_alarm();
+                    system_state = ALARM_ACTIVE;
+                }
+                break;
+
+            case ALARM_ACTIVE:
+                if (read_reset_button())
+                {
+                    deactivate_alarm();
+                    system_state = IDLE;
+                }
+                break;
+
+            default:
+                system_state = IDLE;
+                break;
+        }
+
+        usleep(100000); // 100 ms delay
+    }
+
+    return 0;
+}
