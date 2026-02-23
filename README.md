@@ -1,22 +1,13 @@
 # Smart Embedded Alarm System
 
-## Course
-SWE-450 – Embedded Systems
+## Build Instructions
 
-## Description
-This project implements a Smart Embedded Alarm System using
-an ARM HPS running a C application and custom FPGA logic.
-The system uses GPIO and memory-mapped I/O to interface with
-input peripherals and output devices.
+1. Open terminal
+2. Run: make
+3. Execute: sudo ./alarm_app
 
-## Features
-- State-based alarm control
-- GPIO input handling
-- FPGA interaction (Release 1)
-- LED / display / audio outputs
+## GitHub Link
+[PLACEHOLDER: Insert GitHub Link]
 
-## Repository Structure
-- src/main.c – Main embedded application
-
-## Status
-Embedded Application Release 1 (Milestone 2)
+## Screencast Link
+[PLACEHOLDER: Insert Video Link]
